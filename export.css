@@ -1,0 +1,41 @@
+/* One CSS pixel corresponds to one output pixel at device scale 1. */
+.export-status {
+  width: 1024px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #a7a9ac;
+  background: white;
+  font-size: 14px;
+}
+
+.export-status[data-fit="overflow"] { color: #8b2222; font-weight: 650; }
+
+.export-frame {
+  width: 1024px;
+  height: 768px;
+  padding: 48px;
+  background: #f7f7f6;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.export-frame h1 { font-size: 32px; margin-bottom: 28px; }
+.export-frame .product-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+.export-frame .product-figure { border-right: 1px solid var(--line); border-bottom: 0; }
+.export-frame .product-figure img { width: 316px; }
+.export-frame .spec-row { font-size: 16px; }
+.export-frame .review-layout { grid-template-columns: repeat(2, 452px); gap: 24px; }
+
+.export-frame .review-panel {
+  height: 574px;
+  border-radius: 0;
+  padding: 16px;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.export-frame .review-list { grid-auto-rows: 54px; }
+.export-frame .review-list .review {
+  font-size: 17px;
+  line-height: 21px;
+  padding-block: 5px;
+  overflow: hidden;
+}

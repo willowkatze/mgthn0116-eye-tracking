@@ -1,6 +1,6 @@
 # MGTHN0116 — Eye Tracking & Decision Making
 
-A presentation prototype for a partial replication of an eye-tracking study on attention to positive and negative online reviews and its association with purchase decisions. The smartphone, specifications, and reviews are fictional presentation materials. The review text was written for the demo.
+A presentation prototype for a partial replication of [Chen et al. (2022)](https://doi.org/10.3389/fpsyg.2022.865702). The four phones, specifications, and reviews are fictional placeholders. The phones share one stand-in image. The review text was written for the demo.
 
 ## Run locally
 
@@ -8,37 +8,54 @@ Keep the files together in one folder. Open `index.html` in a desktop browser fo
 
 ### Participant view
 
-1. Review the image and specifications, then select **Next**.
-2. Read the two panels of demo reviews, then select **Next**.
-3. Answer **Yes** or **No** to reach the completion screen.
+1. Select **Start four-trial demo**. A centered fixation cross appears for 5 seconds, followed by product information for 8 seconds.
+2. Read the current phone’s two review panels at your own pace. Select **Continue to decision** when ready.
+3. Answer **Yes** or **No** to “Are you willing to buy this phone?” That response ends the current trial, and the next trial starts at fixation. The completion screen appears after the fourth decision.
 
-The demo choice lives in JavaScript memory for the current page. Reload the page to start a fresh run.
+The four responses live only in JavaScript memory for the current page. Reload the page to start a fresh run.
 
 ### Researcher preview
 
-- Use **Preview stage** to jump to any of the three stages.
-- Open **Customer reviews** to see the condition labels. Use **Show AOI boundaries** to turn the dashed panel outlines on or off. AOI means area of interest.
-- Use **Reverse review positions** to switch which condition appears on each side. The default puts positive reviews on the left.
-- Select **Open participant view** to launch a fresh participant run in a separate tab with the selected order. To use a preconfigured participant URL, add `?order=reversed` to `index.html` for the reverse order. The preview controls apply to the researcher tab and newly launched participant runs.
-- Select **Reset experiment** to return the researcher tab to Stage 1 and clear its current response. The selected review order and outline preference are retained until reload.
+- On **Session overview**, select a phone and **Run one timed trial** for a complete walkthrough, or **Start four-trial demo** for the full sequence.
+- Use **Preview phone** and **Preview stage** to inspect any placeholder trial without waiting for the timer. Selecting a stage ends the active timed run.
+- Under **Customer reviews**, dashed outlines mark the two areas of interest (AOIs). The Left and Right labels identify physical positions. The positive and negative labels identify review valence. Layout A puts positive on the left. Layout B puts negative on the left. The two layouts exchange content while retaining the same physical panels.
+- **Reviews per panel** defaults to ten. The three-review option shortens researcher runs only. Open **Check the fixed 1024 × 768 review stimulus** for a fit check of the selected phone, layout and count. The fit report names rows that exceed their allotted space.
+- **Open participant view** starts a fresh four-trial demo with the selected layout. `index.html?order=reversed` starts with Layout B selected. The selected layout carries through the full run.
+- **Reset experiment** returns to the overview and clears responses. Layout, review count and outline preferences stay selected until reload.
 
 ## Modify the stimulus
 
 | File | Purpose |
 | --- | --- |
-| `stimuli.js` | Phone name, image path and alt text, specification rows, and review lists grouped by condition |
+| `stimuli.js` | Four stable phone IDs, images and alt text, specification rows, and review text by valence |
 | `smartphone.jpg` | Generated image of a generic smartphone |
 | `index.html` and `researcher.html` | Participant and researcher entry points |
 | `experiment.js` | Stage flow, in-memory response, rendering, and preview controls |
 | `styles.css` | Shared typography, panel sizing, and AOI preview outline |
+| `export.html`, `export.css`, `export.js` | Standalone fixed-resolution preview and fit check, using the shared stimulus renderer |
+| `export-stimuli.cjs` | Optional PNG batch export and AOI reference |
 
-Edit `stimuli.js` to update the materials. Keep review counts equal and use comparable review lengths and topics across the two lists. When changing the image, update its relative path and alt text. Use a square image for the current layout.
+Edit `stimuli.js` after the team approves the materials. The normalized `stimuli` array contains entries with a unique `id`, a `product` object and a `reviews` object with `positive` and `negative` arrays. Phone B through D currently use a shortcut that derives specifications from Phone A and keeps opposed review topics paired. Replace these entries with full `product` and `reviews` objects when ready. Use ten short reviews per condition and comparable lengths and topics. Update image paths and alt text for each phone. Use square images for the current product layout.
 
-## Demo and study validation
+## Original procedure and demo choices
 
-The demo uses one fictional phone, three reviews per condition, manual advancement, and a manually selected review order. It runs entirely in the browser with no timing enforcement, Tobii integration, or experimental data collection.
+- **Chen et al.** Four trials with different phones and reviews in randomized order, 5-second fixation shown in Figure 3, 8-second product viewing, self-paced review viewing with keyboard advancement, and a purchase decision for each phone. Each review image had ten reviews per valence in two equal AOIs. Half the participants saw positive reviews at left, and half saw them at right. The lab used a 1024 × 768 display and an EyeLink 1000.
+- **Presentation adaptation.** The demo uses fixed A–D phone order, manually selected participant-level layouts, fictional materials, and clickable review advancement and response buttons. The question uses the team’s requested English wording. Browser timers are approximate. The published stimulus example in Figure 2B shows Chinese positive and negative headings immediately above the review columns. Our demo deliberately omits those headings from the participant and export surfaces. Researcher annotations display position and valence. Confirm the final heading treatment in the replication protocol.
+- **Future lab study.** The website collects no gaze, calibration, trial timing, or persistent response data. Confirm the final materials and valence ratings, order and counterbalance allocation, screen settings, AOI placement, response method, and stimulus timing on the actual lab setup.
 
-Before the lab study, select and validate the final phone and review materials. If the study uses four phones with ten reviews per condition per phone, extend the stimulus structure and trial flow, then verify that the full review sets fit at the required display size. Confirm review valence and comparability, define the condition and phone-order assignment procedure, and validate stimulus durations, monitor settings, AOI coordinates, eye-tracker calibration, and event synchronization on the lab setup. The browser preview's dashed outlines illustrate the proposed panel boundaries. The panels have equal dimensions at each viewport width, and their dimensions can change with viewport size or longer review text.
+## Optional fixed-resolution stimulus export
+
+From the project folder with Node.js installed, run:
+
+```sh
+npm install --no-save --package-lock=false playwright
+npx playwright install chromium
+node export-stimuli.cjs ./stimulus-pngs
+```
+
+The workflow creates one product PNG and two review PNGs per phone at **1024 × 768**. Review images use two **452 × 574** pixel AOIs, a fixed 17 px font, and ten equally spaced review rows. The workflow checks that all rows fit and stops before writing the batch if any screen fails. Shorten or revise the flagged wording, then check both layouts again. The PNGs contain the stimulus surface only. The browser preview's fit report and researcher annotations sit outside that surface.
+
+`manifest.json` gives image-relative coordinates from the top-left, physical position, and valence for each review PNG. Import the PNGs as image stimuli in a screen-based [Tobii Pro Lab project](https://www.tobii.com/products/software/behavior-research-software/tobii-pro-lab/screen-based-eye-tracking-studies). Use the JSON as a reference when creating AOIs in Pro Lab. Confirm final resolution, scaling, placement, timing and advancement there. If the lab uses a different resolution, update the fixed layout and export viewport together, recheck typography and overflow, and regenerate the coordinates. The workflow has been checked with placeholder content in Chromium. Final stimuli and Pro Lab setup require validation by the study team.
 
 ### Demo image provenance
 

@@ -54,7 +54,7 @@ main { padding-bottom: 48px; }
 
 .progress {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   list-style: none;
   margin: 28px 0 36px;
@@ -104,6 +104,32 @@ p { line-height: 1.55; }
 .stage-intro { margin-bottom: 24px; }
 .reviews-intro { margin-bottom: 36px; }
 .stage-intro p { margin-top: 9px; color: var(--muted); }
+.stage-intro .trial-label { margin: 0 0 8px; font-size: 13px; font-weight: 650; }
+.overview-actions { justify-content: flex-start; flex-wrap: wrap; gap: 12px; }
+
+.fixation-field {
+  display: grid;
+  place-items: center;
+  min-height: 340px;
+  background: #f7f7f6;
+}
+
+.fixation-cross { position: relative; display: grid; place-items: center; width: 26px; height: 26px; }
+.fixation-cross::before, .fixation-cross::after { content: ""; position: absolute; background: #22252a; }
+.fixation-cross::before { width: 26px; height: 2px; }
+.fixation-cross::after { width: 2px; height: 26px; }
+.fixation-only .masthead, .fixation-only .progress { display: none; }
+.fixation-only .fixation-field { position: fixed; inset: 0; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 .product-layout {
   display: grid;
@@ -205,6 +231,8 @@ p { line-height: 1.55; }
 }
 
 .review + .review { border-top: 1px solid #e5e5e6; }
+.review-list:has(> :nth-child(4)) .review { padding-block: 5px; line-height: 1.4; }
+.fit-status { margin-top: 12px; color: var(--muted); font-size: 13px; }
 
 .stage-actions { display: flex; justify-content: flex-end; margin-top: 22px; }
 
@@ -268,13 +296,15 @@ p { line-height: 1.55; }
 .researcher-controls input { accent-color: #292c31; }
 .researcher select { font: inherit; border: 1px solid #a7a9ac; border-radius: 5px; padding: 7px; color: inherit; background: var(--white); }
 #review-order { margin-top: 9px; color: var(--muted); }
+.research-note { margin-top: 10px; }
+.research-note p { margin-top: 8px; max-width: 82ch; }
 
 @media (max-width: 650px) {
   .shell { width: calc(100% - 32px); }
   .masthead-content { gap: 9px; }
   .study-name { font-size: 14px; }
   .progress { gap: 9px; margin: 18px 0 25px; }
-  .step { align-items: flex-start; gap: 5px; font-size: 12px; }
+  .step { flex-direction: column; align-items: flex-start; gap: 5px; font-size: 12px; }
   .step-number { flex-basis: 18px; height: 18px; font-size: 10px; }
   .product-layout { grid-template-columns: minmax(0, 1fr); }
   .product-figure { border-right: 0; border-bottom: 1px solid var(--line); }

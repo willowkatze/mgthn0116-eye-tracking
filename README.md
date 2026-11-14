@@ -2,6 +2,8 @@
 
 A presentation prototype for a partial replication of [Chen et al. (2022)](https://doi.org/10.3389/fpsyg.2022.865702). The four phones, specifications, and reviews are fictional placeholders. The phones share one stand-in image. The review text was written for the demo.
 
+See the [team handoff](TEAM_HANDOFF.md) for the demo, its role in the replication, and the decisions still open for the group.
+
 ## Run locally
 
 Keep the files together in one folder. Open `index.html` in a desktop browser for participant view or `researcher.html` for the researcher preview. Both work offline by opening the files directly. No installation or local server is required.

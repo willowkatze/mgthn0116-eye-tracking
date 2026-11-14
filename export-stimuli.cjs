@@ -49,7 +49,12 @@ async function exportStimuli() {
           });
         });
 
-        files.push([filename, await frame.screenshot({ scale: "css" })]);
+        const png = await frame.screenshot({ scale: "css" });
+        // PNG IHDR stores the raster width and height at byte offsets 16 and 20.
+        if (png.readUInt32BE(16) !== width || png.readUInt32BE(20) !== height) {
+          throw new Error(`${filename}: screenshot is not exactly ${width} × ${height} pixels`);
+        }
+        files.push([filename, png]);
         manifest.screens.push({ filename, phone, screen, ...(aois.length ? { layout: order, aois } : {}) });
       }
     }

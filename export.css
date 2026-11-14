@@ -5,6 +5,7 @@
   border-bottom: 1px solid #a7a9ac;
   background: white;
   font-size: 14px;
+  line-height: 20px;
 }
 
 .export-status[data-fit="overflow"] { color: #8b2222; font-weight: 650; }
